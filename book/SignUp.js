@@ -49,7 +49,7 @@ export default class SignUp extends React.Component {
                 this.showMsg(response.data.error_message)
             } else {
               AsyncStorage.setItem('token', response.data.token)
-                this.props.navigation.navigate('MyStack')
+                this.props.navigation.replace('MyStack')
             }
         })
   }

@@ -95,7 +95,7 @@ class Books extends Component {
     this.setState({
       searchedBook: bookname,
       visible: true,
-    })
+    });
     if (type == 2 && authorname == "") {
       this.getAuthorsData(Constant.getAuthorsApi, "search", 1);
     } else if (type == 1 && bookname == "") {
@@ -106,74 +106,87 @@ class Books extends Component {
         authorname: authorname,
       };
 
-      axios.post(Constant.searchBookApi, data).then((response) => {
-        console.log("response", response.data)
-        if (type == 1) {
-          this.setState({
-            booksData: response.data,
-            visible: false
-          });
-        } else {
-          this.setState({
-            authorsData: response.data,
-            visible: false
-          });
-        }
-      })
-      .catch(e => {
-        console.log("err",e)
-        this.setState({
-          visible: false
+      axios
+        .post(Constant.searchBookApi, data)
+        .then((response) => {
+          console.log("response", response.data);
+          if (type == 1) {
+            this.setState({
+              booksData: response.data,
+              visible: false,
+            });
+          } else {
+            this.setState({
+              authorsData: response.data,
+              visible: false,
+            });
+          }
         })
-      });
+        .catch((e) => {
+          console.log("err", e);
+          this.setState({
+            visible: false,
+          });
+        });
     }
   }
 
   render() {
     return (
       <View style={styles.container}>
-      {this.state.booksData.length > 0 || this.state.searchedBook != "" ? (
+        {this.state.booksData.length > 0 || this.state.searchedBook != "" ? (
+          <View
+            style={{
+              width: responsiveWidth(90),
+              flexDirection: "row",
+              alignItems: "center",
+              alignSelf: "center",
+              borderWidth: 1,
+              borderColor: "gray",
+              borderRadius: 10,
+              marginTop: 10,
+              paddingHorizontal: 10,
+              marginBottom: 10,
+              justifyContent: "space-between",
+            }}
+          >
+            <TextInput
+              placeholder="Search Book"
+              onChangeText={(text) => this.getSearchedData(text, "", 1)}
+              style={{
+                width: responsiveWidth(70),
+              }}
+            />
+            <TouchableWithoutFeedback>
               <View
                 style={{
-                  width: responsiveWidth(90),
-                  flexDirection: "row",
+                  width: 40,
+                  height: 40,
                   alignItems: "center",
-                  alignSelf: "center",
-                  borderWidth: 1,
-                  borderColor: "gray",
-                  borderRadius: 10,
-                  marginTop: 10,
-                  paddingHorizontal: 10,
-                  marginBottom: 10,
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                 }}
               >
-                <TextInput
-                  placeholder="Search Book"
-                  onChangeText={(text) => this.getSearchedData(text, "", 1)}
-                  style={{
-                    width: responsiveWidth(70),
-                  }}
-                />
-                <TouchableWithoutFeedback>
-                  <View
-                    style={{
-                      width: 40,
-                      height: 40,
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Loupe height={24} width={24} />
-                  </View>
-                </TouchableWithoutFeedback>
+                <Loupe height={24} width={24} />
               </View>
+            </TouchableWithoutFeedback>
+          </View>
+        ) : null}
+        <View style={styles.tabContent}>
+          <ScrollView
+            nestedScrollEnabled={true}
+            contentContainerStyle={{ alignItems: "center" }}
+          >
+            {this.state.booksData.length > 0 &&
+            this.state.searchedBook == "" ? (
+              <Image
+                style={{
+                  width: responsiveWidth(90),
+                  height: 120,
+                  resizeMode: "contain",
+                }}
+                source={require("../../assets/banner.jpg")}
+              />
             ) : null}
-          <View style={styles.tabContent}>
-            
-            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{alignItems: "center"}}>
-            {this.state.booksData.length > 0 && this.state.searchedBook == "" ? (
-            <Image style={{width: responsiveWidth(90), height: 120, resizeMode:"contain"}} source={require('../../assets/banner.jpg')}/>) : null }
             {this.state.visible ? (
               <ActivityIndicator size="small" color="#e91e63" />
             ) : null}
@@ -200,51 +213,47 @@ class Books extends Component {
                     <View
                       style={{
                         alignItems: "center",
-                        marginVertical: 15,
-                        alignSelf: "center",
-                        width: responsiveWidth(33),
-                        borderRadius: 10,
+                        marginBottom: 20,
+                        width: responsiveWidth(50),
                       }}
                     >
-                      <Image
-                        style={[styles.tinyLogo, { resizeMode: "contain" }]}
-                        source={{
-                          uri: item.book_cover_url,
+                      <View
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: responsiveWidth(35),
+                          aspectRatio: 1,
+                          margin: 10,
+                          borderRadius: 200,
+                          borderWidth: 4,
+                          marginBottom: 10,
+                          borderColor: "#c9ad",
                         }}
-                      />
-                      <TouchableWithoutFeedback
-                        onPress={() =>
-                          this.props.navigation.navigate("BookInfo", {
-                            item: item,
-                            bookId: item.id,
-                          })
-                        }
                       >
-                        <View
-                          style={{
-                            width: responsiveWidth(30),
-                            padding: 5,
-                            backgroundColor: "#e91e63",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            position: "absolute",
-                            borderRadius: 10,
-                            margin: 10,
-                            bottom: -15,
-                          }}
-                        >
-                          <Text
-                            numberOfLines={1}
+                        <View style={{ padding: 10 }}>
+                          <Image
                             style={{
-                              color: "#fff",
-                              fontWeight: "bold",
-                              fontSize: 12,
+                              zIndex: -1,
+                              width: responsiveWidth(30),
+                              borderRadius: 200,
+                              aspectRatio: 1,
+                              resizeMode: "contain",
                             }}
-                          >
-                            {item.book_name}
-                          </Text>
+                            source={{
+                              uri:
+                                item.book_cover_url != ""
+                                  ? item.book_cover_url
+                                  : "#https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?b=1&k=6&m=1214428300&s=612x612&w=0&h=kMXMpWVL6mkLu0TN-9MJcEUx1oSWgUq8-Ny6Wszv_ms=",
+                            }}
+                          />
                         </View>
-                      </TouchableWithoutFeedback>
+                      </View>
+                      <Text
+                        numberOfLines={1}
+                        style={{ color: "#000", fontWeight: "bold" }}
+                      >
+                        {item.book_name}
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 )}
@@ -268,12 +277,11 @@ class Books extends Component {
                 </Text>
               </View>
             )}
-            
-            </ScrollView>
+          </ScrollView>
 
-            {/* Book data ends */}
-          </View>
-           
+          {/* Book data ends */}
+        </View>
+
         {/*  tab content ends */}
       </View>
     );

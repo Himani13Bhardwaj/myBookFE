@@ -91,7 +91,7 @@ class GenresTab extends Component {
             {this.state.genresData.length > 0 ? (
               <FlatList
                 data={this.state.genresData}
-                contentContainerStyle={{ alignItems: "flex-start" }}
+                contentContainerStyle={{ alignItems: "flex-start", justifyContent: 'space-between', width: responsiveWidth(100) }}
                 renderItem={({ item }) => (
                   <TouchableWithoutFeedback
                     onPress={() =>
@@ -102,50 +102,45 @@ class GenresTab extends Component {
                       })
                     }
                   >
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        margin: 5,
-                        marginVertical: 10,
-                        borderRadius: 5,
-                        backgroundColor: "#e5e5e5",
-                      }}
-                    >
+                  <View style={{ alignItems: "center",
+                          marginBottom: 20, width: responsiveWidth(33) }}>
                       <View
                         style={{
-                          padding: 10,
-                          paddingVertical: 20,
-                        }}
-                      >
-                        <Image
-                          source={{ uri: item.genre_img }}
-                          style={{
-                            height: 70,
-                            width: 70,
-                            resizeMode: "contain",
-                          }}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          width: responsiveWidth(30),
-                          backgroundColor: "#e91e63",
-                          justifyContent: "center",
                           alignItems: "center",
-                          borderBottomStartRadius: 5,
-                          borderBottomEndRadius: 5,
-                          paddingHorizontal: 10,
-                          paddingVertical: 5,
+                          justifyContent: "center",
+                          width: responsiveWidth(25),
+                          aspectRatio: 1,
+                          margin: 10,
+                          borderRadius: 200,
+                          borderWidth: 4,
+                          marginBottom: 10,
+                          borderColor: "#c9ad",
                         }}
                       >
-                        <Text
-                          numberOfLines={1}
-                          style={{ color: "#fff", fontWeight: "bold" }}
-                        >
-                          {item.genre_name}
-                        </Text>
+                        <View style={{ padding: 10 }}>
+                          <Image
+                            style={{
+                              zIndex: -1,
+                              width: responsiveWidth(20),
+                          borderRadius: 200,
+                              aspectRatio: 1,
+                              resizeMode: "contain",
+                            }}
+                            source={{
+                              uri:
+                                item.genre_img != ""
+                                  ? item.genre_img
+                                  : "#https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?b=1&k=6&m=1214428300&s=612x612&w=0&h=kMXMpWVL6mkLu0TN-9MJcEUx1oSWgUq8-Ny6Wszv_ms=",
+                            }}
+                          />
+                        </View>
                       </View>
+                      <Text
+                        numberOfLines={1}
+                        style={{ color: "#000", fontWeight: "bold" }}
+                      >
+                        {item.genre_name}
+                      </Text>
                     </View>
                   </TouchableWithoutFeedback>
                 )}

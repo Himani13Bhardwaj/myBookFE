@@ -165,7 +165,7 @@ class AuthorsTab extends Component {
                 style={{ alignSelf: "center" }}
                 contentContainerStyle={{
                   alignItems: "center",
-                  width: responsiveWidth(90),
+                  width: responsiveWidth(100),
                   justifyContent: "space-between",
                   paddingBottom: 60,
                 }}

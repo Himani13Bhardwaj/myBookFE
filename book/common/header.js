@@ -15,7 +15,7 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from "react-native-responsive-dimensions";
-import BookIcon from "../../assets/book_placeholder.svg";
+import BookIcon from "../../assets/appicon.svg";
 import LeftArrow from "../../assets/left-arrow.svg";
 
 export const Header = (props) => {

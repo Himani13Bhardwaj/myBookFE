@@ -282,8 +282,8 @@ class BookInfo extends Component {
                 width: responsiveWidth(100),
                 height: responsiveHeight(30),
                 resizeMode: "contain",
-                backgroundColor: "gray",
               }}
+              source={{uri: this.state.bookCover}}
             />
             <TouchableOpacity
               style={{
@@ -441,22 +441,25 @@ class BookInfo extends Component {
                   <View
                     style={{
                       padding: 10,
-                      flexDirection: "row",
-                      alignItems: "center",
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                      width: responsiveWidth(90)
                     }}
                   >
+                  <View style={{flexDirection: "row", alignItems: "center"}}>
                     <View
                       style={{
                         width: 30,
                         aspectRatio: 1,
                         borderRadius: 100,
                         borderWidth: 2,
+                        borderColor: "#e91e63",
                         marginRight: 10,
                         alignItems: "center",
                         justifyContent: "center",
                       }}
                     >
-                      <Text>{index + 1}</Text>
+                      <Text style={{fontWeight: "bold", color:"#e91e63"}}>{item.username.slice(0,1).toUpperCase()}</Text>
                     </View>
                     <Text
                       style={{
@@ -465,9 +468,15 @@ class BookInfo extends Component {
                         color: "#000",
                       }}
                     >
-                      {item}
+                      {item.comment}
                     </Text>
+                    </View>
+                    <View style={{alignSelf: "flex-end", flexDirection: "row", alignItems: "center"}}>
+                      <Text style={{fontSize: 12, color: "gray"}}>{item.username} | </Text> 
+                      <Text style={{fontSize: 12, color: "gray"}}>{item.email}</Text> 
+                    </View>
                   </View>
+                  
                 </TouchableWithoutFeedback>
               )}
             />
