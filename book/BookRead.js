@@ -33,6 +33,7 @@ import AnimatedLoader from "react-native-animated-loader";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import PDFReader from "rn-pdf-reader-js";
+import CountDown from "react-native-countdown-component";
 
 export default class BookInfo extends React.Component {
   state = {
@@ -42,6 +43,7 @@ export default class BookInfo extends React.Component {
     chapter_url: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
     state: "",
     chapter_name: "",
+    timer: 60 * 60,
     visible: false,
   };
 
@@ -138,19 +140,19 @@ export default class BookInfo extends React.Component {
           ToastAndroid.show("Please Login First!", ToastAndroid.SHORT);
         } else {
           if (response.data.message == "Successfully unlock the chapter") {
-            this.bookRead(this.state.chapter)
-          } {
-          ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+            this.bookRead(this.state.chapter);
+          }
+          {
+            ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
           }
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("unlock err", e);
         this.setState({
           visible: false,
         });
-      })
-      ;
+      });
   }
 
   render() {
@@ -188,59 +190,65 @@ export default class BookInfo extends React.Component {
               {this.state.message}
             </Text>
             {this.state.message != "Book Not Available Currently!" ? (
-              <View style={{alignItems: "center"}}>
-              <TouchableOpacity onPress={() => this.unlockChapter()}>
-                <View
-                  style={{
-                    backgroundColor: "#e91e63",
-                    padding: 10,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: 10,
-                    margin: 10,
-                    alignSelf: "center",
-                    flexDirection: "row",
-                    width: responsiveWidth(50),
-                  }}
-                >
-                  <Entypo name="lock-open" size={16} color="white" />
-                  <Text
+              <View style={{ alignItems: "center" }}>
+                <TouchableOpacity onPress={() => this.unlockChapter()}>
+                  <View
                     style={{
-                      marginLeft: 10,
-                      color: "#fff",
-                      fontWeight: "bold",
+                      backgroundColor: "#e91e63",
+                      padding: 10,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: 10,
+                      margin: 10,
+                      alignSelf: "center",
+                      flexDirection: "row",
+                      width: responsiveWidth(50),
                     }}
                   >
-                    Unlock Chapter
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.replace('MyStack', {screen: 'Setting'})}>
-                <View
-                  style={{
-                    backgroundColor: "#e91e63",
-                    padding: 10,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: 10,
-                    margin: 10,
-                    alignSelf: "center",
-                    flexDirection: "row",
-                    width: responsiveWidth(50),
-                  }}
+                    <Entypo name="lock-open" size={16} color="white" />
+                    <Text
+                      style={{
+                        marginLeft: 10,
+                        color: "#fff",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Unlock Chapter
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.replace("MyStack", {
+                      screen: "Setting",
+                    })
+                  }
                 >
-                  <Entypo name="lock-open" size={16} color="white" />
-                  <Text
+                  <View
                     style={{
-                      marginLeft: 10,
-                      color: "#fff",
-                      fontWeight: "bold",
+                      backgroundColor: "#e91e63",
+                      padding: 10,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: 10,
+                      margin: 10,
+                      alignSelf: "center",
+                      flexDirection: "row",
+                      width: responsiveWidth(50),
                     }}
                   >
-                    Buy Coins
-                  </Text>
-                </View>
-              </TouchableOpacity>
+                    <FontAwesome name="rupee" size={16} color="white" />
+                    <Text
+                      style={{
+                        marginLeft: 10,
+                        color: "#fff",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Buy Coins
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             ) : (
               <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
@@ -295,13 +303,13 @@ export default class BookInfo extends React.Component {
                   padding: 10,
                   flexDirection: "row",
                   alignItems: "center",
-                  width: responsiveWidth(90),
+                  width: responsiveWidth(100),
                   justifyContent: "space-between",
                   alignSelf: "center",
                 }}
               >
                 <TouchableOpacity
-                disabled={this.state.chapter == 1}
+                  disabled={this.state.chapter == 1}
                   onPress={() => this.bookRead(this.state.chapter - 1)}
                   style={{}}
                 >
@@ -309,6 +317,7 @@ export default class BookInfo extends React.Component {
                     style={{
                       backgroundColor: "#e91e63",
                       padding: 10,
+                      marginRight: 10,
                       justifyContent: "center",
                       alignItems: "center",
                       borderRadius: 10,
@@ -323,7 +332,7 @@ export default class BookInfo extends React.Component {
                     />
                     <Text
                       style={{
-                        marginLeft: 10,
+                        fontSize: 12,
                         color: "#fff",
                         fontWeight: "bold",
                       }}
@@ -332,6 +341,33 @@ export default class BookInfo extends React.Component {
                     </Text>
                   </View>
                 </TouchableOpacity>
+                {this.state.timer != 0 ?
+                <CountDown
+                  style={{ marginTop: 10 }}
+                  until={this.state.timer}
+                  size={2}
+                  digitStyle={{ backgroundColor: "#e91e63" }}
+                  digitTxtStyle={{ color: "#fff" }}
+                  timeToShow={["M", "S"]}
+                  timeLabels={{ m: "", s: "" }}
+                  onChange={(text) => {
+                    if (text == 2700) {
+                      AsyncStorage.setItem('readTimer', "15")
+                    }
+                    if (text == 1800) {
+                      AsyncStorage.setItem('readTimer', "30")
+                    }
+                    if (text == 1) {
+                      AsyncStorage.setItem('readTimer', "60")
+                      this.setState({
+                        timer: 0
+                      })
+                    }
+                  }}
+                  onFinish={() => this.setState({ timer: 0 })}
+                  running={this.state.unlock == false ? false : true}
+                  size={20}
+                /> : null }
                 <TouchableOpacity
                   onPress={() => this.bookRead(this.state.chapter + 1)}
                   style={{}}
@@ -340,6 +376,7 @@ export default class BookInfo extends React.Component {
                     style={{
                       backgroundColor: "#e91e63",
                       padding: 10,
+                      marginLeft: 10,
                       justifyContent: "center",
                       alignItems: "center",
                       borderRadius: 10,
@@ -349,7 +386,7 @@ export default class BookInfo extends React.Component {
                   >
                     <Text
                       style={{
-                        marginRight: 10,
+                        fontSize: 12,
                         color: "#fff",
                         fontWeight: "bold",
                       }}

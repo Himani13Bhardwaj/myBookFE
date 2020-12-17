@@ -222,7 +222,7 @@ class BookInfo extends Component {
           });
         })
         .catch((err) => {
-          console.log("book down vote err", e);
+          console.log("book down vote err", err);
         this.setState({
           visible: false,
         });
@@ -242,9 +242,9 @@ class BookInfo extends Component {
     ToastAndroid.show("Please login first!", ToastAndroid.SHORT);
   }
 
-  readBook() {
+  async readBook() {
     console.log(this.state.token)
-    if (this.state.token != null && this.state.token != undefined) {
+    if (await AsyncStorage.getItem("token") != null && await AsyncStorage.getItem("token") != undefined) {
       this.props.navigation.navigate("BookRead", {
         title: this.state.bookName,
         bookid: this.state.id,

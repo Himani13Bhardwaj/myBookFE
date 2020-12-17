@@ -93,9 +93,9 @@ class GenresTab extends Component {
                 data={this.state.genresData}
                 contentContainerStyle={{ alignItems: "flex-start", justifyContent: 'space-between', width: responsiveWidth(100) }}
                 renderItem={({ item }) => (
-                  <TouchableWithoutFeedback
+                  <TouchableOpacity
                     onPress={() =>
-                      this.props.navigation.navigate("Genres", {
+                      this.props.navigation.navigate("Genre", {
                         id: item.id,
                         genreName: item.genre_name,
                         genre_image: item.genre_img,
@@ -142,7 +142,7 @@ class GenresTab extends Component {
                         {item.genre_name}
                       </Text>
                     </View>
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                 )}
                 numColumns={3}
                 ItemSeparatorComponent={this.renderSeparator}

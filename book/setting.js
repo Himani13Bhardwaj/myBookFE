@@ -41,12 +41,14 @@ class Setting extends Component {
       coinsCount: 0,
       loggedIn: "",
       visible: false,
+      readTimer: "0",
     };
   }
 
   async componentDidMount() {
     this.setState({
       token: await AsyncStorage.getItem("token"),
+      readTimer: await AsyncStorage.getItem("readTimer"),
     });
     if (
       (await AsyncStorage.getItem("token")) != undefined &&
@@ -88,7 +90,7 @@ class Setting extends Component {
   async claimCoins(coins) {
     this.setState({
       coinsCount: this.state.coinsCount + coins,
-      visible: true
+      visible: true,
     });
 
     const headers = {
@@ -105,15 +107,15 @@ class Setting extends Component {
       .then((response) => {
         console.log(response.data);
         this.setState({
-          visible: false
-        })
+          visible: false,
+        });
         ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
       })
-      .catch(e => {
-        console.log("error:", e)
+      .catch((e) => {
+        console.log("error:", e);
         this.setState({
-          visible: false
-        })
+          visible: false,
+        });
       });
   }
 
@@ -141,36 +143,39 @@ class Setting extends Component {
           animationStyle={{ width: 300, height: 300 }}
           speed={1}
         />
-        <View
-          style={{
-            alignSelf: "center",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 100,
-            padding: 10,
-            marginTop: 20,
-            backgroundColor: "#fff",
-          }}
-        >
-          <Profile height={40} width={40} />
+        <View style={{ flexDirection: "row", alignItems: "center", width: responsiveWidth(90), }}>
+          <View
+            style={{
+              alignSelf: "center",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 100,
+              padding: 10,
+              marginTop: 20,
+              backgroundColor: "#fff",
+            }}
+          >
+            <Profile height={40} width={40} />
+          </View>
+          <Text
+            style={{
+              color: "#000",
+              fontSize: 24,
+              marginTop: 20,
+              marginLeft: 10,
+              fontWeight: "bold",
+            }}
+          >
+            {this.state.token != null && this.state.token != undefined
+              ? this.state.username
+              : "Guest"}
+          </Text>
         </View>
-        <Text
-          style={{
-            color: "#000",
-            fontSize: 24,
-            marginTop: 10,
-            fontWeight: "bold",
-          }}
-        >
-          {this.state.token != null && this.state.token != undefined
-            ? this.state.username
-            : "Guest"}
-        </Text>
 
         <View
           style={{
             width: responsiveWidth(100),
-            height: responsiveHeight(60),
+            height: responsiveHeight(70),
             position: "absolute",
             bottom: 0,
             backgroundColor: "#fff",
@@ -248,7 +253,10 @@ class Setting extends Component {
                   <Text
                     style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}
                   >
-                    Claim Coins{'\n'}<Text style={{fontSize: 12, fontWeight: "normal"}}>Click to claim coins</Text>
+                    Claim Coins{"\n"}
+                    <Text style={{ fontSize: 12, fontWeight: "normal" }}>
+                      Click to claim coins
+                    </Text>
                   </Text>
                 </View>
                 <View
@@ -260,11 +268,15 @@ class Setting extends Component {
                     width: responsiveWidth(40),
                   }}
                 >
-                  <TouchableOpacity onPress={() => this.claimCoins(15)}>
+                  <TouchableOpacity
+                    disabled={this.state.readTimer != "15"}
+                    onPress={() => this.claimCoins(15)}
+                  >
                     <View
                       style={{
                         borderRadius: 60,
-                        backgroundColor: "#e91e63",
+                        backgroundColor:
+                          this.state.readTimer == "15" ? "#e91e63" : "gray",
                         padding: 10,
                         justifyContent: "center",
                         alignItems: "center",
@@ -281,11 +293,15 @@ class Setting extends Component {
                       </Text>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity disabled={true} onPress={() => this.claimCoins(30)}>
+                  <TouchableOpacity
+                    disabled={this.state.readTimer != "30"}
+                    onPress={() => this.claimCoins(30)}
+                  >
                     <View
                       style={{
                         borderRadius: 60,
-                        backgroundColor: "gray",
+                        backgroundColor:
+                          this.state.readTimer == "30" ? "#e91e63" : "gray",
                         padding: 10,
                         justifyContent: "center",
                         alignItems: "center",
@@ -302,11 +318,15 @@ class Setting extends Component {
                       </Text>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity disabled={true} onPress={() => this.claimCoins(60)}>
+                  <TouchableOpacity
+                    disabled={this.state.readTimer != "60"}
+                    onPress={() => this.claimCoins(60)}
+                  >
                     <View
                       style={{
                         borderRadius: 60,
-                        backgroundColor: "gray",
+                        backgroundColor:
+                          this.state.readTimer == "60" ? "#e91e63" : "gray",
                         padding: 10,
                         justifyContent: "center",
                         alignItems: "center",
@@ -325,89 +345,113 @@ class Setting extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Feedback')}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: responsiveWidth(90),
-                  alignSelf: "center",
-                  padding: 10,
-                  alignItems: "center",
-                }}
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Feedback")}
               >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Love  height={20} width={20} />
-                  <Text
-                    style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}
-                  >
-                    Feedback
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: responsiveWidth(90),
+                    alignSelf: "center",
+                    padding: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Love height={20} width={20} />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "bold",
+                        marginLeft: 10,
+                      }}
+                    >
+                      Feedback
+                    </Text>
+                  </View>
                 </View>
-              </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('About')}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: responsiveWidth(90),
-                  alignSelf: "center",
-                  padding: 10,
-                  alignItems: "center",
-                }}
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("About")}
               >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <AboutApp height={20} width={20} />
-                  <Text
-                    style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}
-                  >
-                    About App
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: responsiveWidth(90),
+                    alignSelf: "center",
+                    padding: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <AboutApp height={20} width={20} />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "bold",
+                        marginLeft: 10,
+                      }}
+                    >
+                      About App
+                    </Text>
+                  </View>
                 </View>
-              </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('PrivacyPolicy')}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: responsiveWidth(90),
-                  alignSelf: "center",
-                  padding: 10,
-                  alignItems: "center",
-                }}
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("PrivacyPolicy")}
               >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Privacy height={20} width={20} />
-                  <Text
-                    style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}
-                  >
-                    Privacy Policy
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: responsiveWidth(90),
+                    alignSelf: "center",
+                    padding: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Privacy height={20} width={20} />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "bold",
+                        marginLeft: 10,
+                      }}
+                    >
+                      Privacy Policy
+                    </Text>
+                  </View>
                 </View>
-              </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Terms')}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: responsiveWidth(90),
-                  alignSelf: "center",
-                  padding: 10,
-                  alignItems: "center",
-                }}
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Terms")}
               >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Terms  height={20} width={20} />
-                  <Text
-                    style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}
-                  >
-                    Terms & Conditions
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: responsiveWidth(90),
+                    alignSelf: "center",
+                    padding: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Terms height={20} width={20} />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "bold",
+                        marginLeft: 10,
+                      }}
+                    >
+                      Terms & Conditions
+                    </Text>
+                  </View>
                 </View>
-              </View>
               </TouchableOpacity>
               {/* <View
                 style={{
@@ -429,7 +473,6 @@ class Setting extends Component {
                 </View>
                 <Text style={{ fontSize: 16 }}>{this.state.loggedIn}</Text>
               </View> */}
-              
             </View>
           ) : (
             <View

@@ -46,7 +46,7 @@ function App() {
         <Stack.Screen name="MyStack" component={MyStack} options={{headerShown: false}}/>
         <Stack.Screen name="BookInfo" component={BookInfo} options={{headerShown: false}} />
         <Stack.Screen name="BookRead" component={BookRead} options={{headerShown: false}} />
-        <Stack.Screen name="Genres" component={Genres} options={{headerShown: false}} />
+        <Stack.Screen name="Genre" component={Genres} options={{headerShown: false}} />
         <Stack.Screen name="Terms" component={Terms} options={{headerShown: false}} />
         <Stack.Screen name="About" component={About} options={{headerShown: false}} />
         <Stack.Screen name="Feedback" component={Feedback} options={{headerShown: false}} />
