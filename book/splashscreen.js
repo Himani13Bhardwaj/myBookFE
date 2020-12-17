@@ -34,7 +34,7 @@ export default class SplashScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image style={{width: 300, height: 300, resizeMode: "contain"}} source={require('../assets/logo.png')} />
+        <Image style={{width: 300, height: 300, resizeMode: "contain"}} source={require('../assets/logos/logo.png')} />
       </View>
     );
   }
