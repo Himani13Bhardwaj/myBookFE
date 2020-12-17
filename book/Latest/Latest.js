@@ -12,6 +12,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ActivityIndicator
 } from "react-native";
 import { Header } from "../../book/common/header";
 import Constants from "expo-constants";
@@ -83,13 +84,8 @@ class Latest extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <AnimatedLoader
-          visible={this.state.visible}
-          overlayColor="rgba(255,255,255,0.75)"
-          source={require("../../assets/loader.json")}
-          animationStyle={{ width: 300, height: 300 }}
-          speed={1}
-        />
+        {this.state.visible ?
+        <ActivityIndicator size="small" animating={this.state.visible} style={{marginVertical: 10}} color="#e91e63" /> : null }
         {this.state.latestBooks.length > 0 ? (
           <FlatList
             data={this.state.latestBooks}
