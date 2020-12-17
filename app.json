@@ -4,7 +4,7 @@
         "slug": "BookHunt",
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./assets/appicon.png",
+        "icon": "./assets/logos/appicon.png",
         "updates": {
             "fallbackToCacheTimeout": 0
         },
@@ -19,7 +19,7 @@
             "versionCode": 1
         },
         "web": {
-            "favicon": "./assets/appicon.png"
+            "favicon": "./assets/logos/appicon.png"
         },
         "packagerOpts": {
             "config": "metro.config.js",
