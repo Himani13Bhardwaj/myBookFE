@@ -110,6 +110,7 @@ class Setting extends Component {
           visible: false,
         });
         ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+        AsyncStorage.setItem("readTimer", "0")
       })
       .catch((e) => {
         console.log("error:", e);
