@@ -355,31 +355,31 @@ class BookInfo extends Component {
                   marginLeft: 0,
                   width: responsiveWidth(25),
                   flexDirection: "row",
-                  justifyContent: "space-between",
+                  justifyContent: "space-around",
                   alignItems: "center",
                 }}
               >
                 {this.state.liked ? (
-                  <LikeFilled height={40} width={40} />
+                  <LikeFilled height={30} width={30} />
                 ) : (
                   <TouchableWithoutFeedback
                     onPress={() => {
                       this.upVote();
                     }}
                   >
-                    <Like height={40} width={40} />
+                    <Like height={30} width={30} />
                   </TouchableWithoutFeedback>
                 )}
                 <View style={{ marginTop: 25 }}>
                   {this.state.disliked ? (
-                    <DislikeFilled height={40} width={40} />
+                    <DislikeFilled height={30} width={30} />
                   ) : (
                     <TouchableWithoutFeedback
                       onPress={() => {
                         this.downVote();
                       }}
                     >
-                      <Dislike height={40} width={40} />
+                      <Dislike height={30} width={30} />
                     </TouchableWithoutFeedback>
                   )}
                 </View>

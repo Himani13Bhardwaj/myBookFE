@@ -254,31 +254,29 @@ class Setting extends Component {
                   <Text
                     style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}
                   >
-                    Claim Coins{"\n"}
-                    <Text style={{ fontSize: 12, fontWeight: "normal" }}>
-                      Click to claim coins
-                    </Text>
+                    Claim Coins
                   </Text>
                 </View>
+                
                 <View
                   style={{
                     marginLeft: 10,
                     flexDirection: "row",
                     alignItems: "center",
-                    justifyContent: "space-between",
+                    justifyContent: "flex-end",
                     width: responsiveWidth(40),
                   }}
                 >
+                {this.state.readTimer == "15" ?
                   <TouchableOpacity
-                    disabled={this.state.readTimer != "15"}
                     onPress={() => this.claimCoins(15)}
                   >
                     <View
                       style={{
                         borderRadius: 60,
-                        backgroundColor:
-                          this.state.readTimer == "15" ? "#e91e63" : "gray",
+                        backgroundColor: "#e91e63",
                         padding: 10,
+                        paddingVertical: 5,
                         justifyContent: "center",
                         alignItems: "center",
                       }}
@@ -287,13 +285,13 @@ class Setting extends Component {
                         style={{
                           fontSize: 16,
                           color: "#fff",
-                          fontWeight: "bold",
                         }}
                       >
-                        15
+                        Claim 15 Coins
                       </Text>
                     </View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> : null}
+                  {this.state.readTimer == "30" ?
                   <TouchableOpacity
                     disabled={this.state.readTimer != "30"}
                     onPress={() => this.claimCoins(30)}
@@ -318,7 +316,8 @@ class Setting extends Component {
                         30
                       </Text>
                     </View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> : null }
+                  {this.state.readTimer == "60" ?
                   <TouchableOpacity
                     disabled={this.state.readTimer != "60"}
                     onPress={() => this.claimCoins(60)}
@@ -343,7 +342,12 @@ class Setting extends Component {
                         60
                       </Text>
                     </View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> : null }
+                  {this.state.readTimer != "15" && this.state.readTimer != "30" && this.state.readTimer != "60" ?
+                  <View style={{flexDirection: "row", alignItems: "center"}}>
+                    <Error width={16} height={16}/>
+                    <Text style={{color:"gray", marginLeft: 5}}>No Coins to Claim</Text>
+                    </View>: null}
                 </View>
               </View>
               <TouchableOpacity

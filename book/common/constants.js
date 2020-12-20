@@ -16,5 +16,5 @@ export const bookCommentApi = baseUrl + 'book/comment/';
 export const latestBooksApi = baseUrl + 'book/latest/';
 export const claimCoinsApi = baseUrl + 'userProfile/claim/';
 export const userProfileApi = baseUrl + 'userProfile/';
-export const userCollectionApi = baseUrl + 'userProfile/';
+export const userCollectionApi = baseUrl + 'userCollection/';
 export const feedbackApi = baseUrl + 'userActivity/feedback';

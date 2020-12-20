@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { Tab } from "../../book/tab";
 import {
@@ -36,7 +37,9 @@ class ReadingBooks extends Component {
   }
 
   componentDidMount() {
-    this.getLatestBooks();
+    this._unsubscribe = this.props.navigation.addListener("focus", () => {
+      this.getLatestBooks();
+    });
   }
 
   async getLatestBooks() {
@@ -44,17 +47,17 @@ class ReadingBooks extends Component {
       visible: true,
     });
     const headers = {
-      Authorization: await AsyncStorage.getItem("token"),
+      Authorization: "Token "+await AsyncStorage.getItem("token"),
       "Content-Type": "application/json",
     };
     axios
-      .get(Constant.userCollectionApi)
+      .post(Constant.userCollectionApi, "", {headers: headers})
       .then((response) => {
         this.setState({
           visible: false,
         });
-        let BooksData = response.data.latest;
-        console.log("latest books", response.data);
+        let BooksData = response.data;
+        console.log("[latest books]", response.data);
         // if (callFrom == "search") {
         //   this.setState({
         //     authorsData: authorsData,
@@ -69,6 +72,7 @@ class ReadingBooks extends Component {
         // } else {
         this.setState({
           latestBooks: BooksData,
+          lengthBook: BooksData.length
         });
         //   }
         // }
@@ -87,15 +91,8 @@ class ReadingBooks extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.state.latestBooks.length > 0 ? (
-          <View style={styles.tabContent}>
-            <View
-              style={
-                this.state["activeTab"] === "readingBook"
-                  ? [styles.activeTabPane, styles.display]
-                  : styles.none
-              }
-            >
+        <ActivityIndicator size="small" animating={this.state.visible} color= "#e91e63"/>
+        {this.state.lengthBook > 0 ? (
               <FlatList
                 data={this.state.latestBooks}
                 contentContainerStyle={{
@@ -158,8 +155,6 @@ class ReadingBooks extends Component {
                 ItemSeparatorComponent={this.renderSeparator}
                 keyExtractor={(item, index) => index.toString()}
               />
-            </View>
-          </View>
         ) : (
           <View
             style={{
