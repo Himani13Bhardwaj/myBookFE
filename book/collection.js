@@ -14,7 +14,6 @@ function Collection() {
         style: {
           backgroundColor: "#e91e63",
           elevation: 0,
-          marginTop: 30,
           justifyContent: "center",
         },
         labelStyle: {

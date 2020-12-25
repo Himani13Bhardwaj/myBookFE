@@ -123,7 +123,6 @@ class Setting extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header headerTitle="Settings" />
         <Image
           source={require("../assets/background.jpg")}
           style={{
@@ -131,8 +130,8 @@ class Setting extends Component {
             height: responsiveHeight(100),
             marginTop: Constants.statusBarHeight,
             resizeMode: "contain",
-            opacity: 0.2,
-            top: -200,
+            opacity: 0.08,
+            top: -220,
             position: "absolute",
             zIndex: -1,
           }}
@@ -144,7 +143,7 @@ class Setting extends Component {
           animationStyle={{ width: 300, height: 300 }}
           speed={1}
         />
-        <View style={{ flexDirection: "row", alignItems: "center", width: responsiveWidth(90), }}>
+        <View style={{ flexDirection: "row", alignItems: "center", width: responsiveWidth(90), marginVertical: responsiveHeight(5) }}>
           <View
             style={{
               alignSelf: "center",
@@ -152,7 +151,6 @@ class Setting extends Component {
               justifyContent: "center",
               borderRadius: 100,
               padding: 10,
-              marginTop: 20,
               backgroundColor: "#fff",
             }}
           >
@@ -162,7 +160,6 @@ class Setting extends Component {
             style={{
               color: "#000",
               fontSize: 24,
-              marginTop: 20,
               marginLeft: 10,
               fontWeight: "bold",
             }}
@@ -176,14 +173,13 @@ class Setting extends Component {
         <View
           style={{
             width: responsiveWidth(100),
-            height: responsiveHeight(70),
+            height: responsiveHeight(65),
             position: "absolute",
             bottom: 0,
             backgroundColor: "#fff",
-            borderTopStartRadius: 40,
-            borderTopEndRadius: 40,
+            borderTopStartRadius: 60,
+            borderTopEndRadius: 60,
             padding: 20,
-            borderTopWidth: 1,
             borderTopColor: "gray",
           }}
         >
@@ -532,7 +528,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#e5e5e5",
-    marginTop: Constants.statusBarHeight,
     alignItems: "center",
   },
 });
