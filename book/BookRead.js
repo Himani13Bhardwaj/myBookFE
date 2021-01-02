@@ -351,14 +351,18 @@ export default class BookInfo extends React.Component {
                   timeToShow={["M", "S"]}
                   timeLabels={{ m: "", s: "" }}
                   onChange={(text) => {
+                    console.log(text)
                     if (text == 2700) {
                       AsyncStorage.setItem('readTimer', "15")
+                      ToastAndroid.show("15 Coins Added", ToastAndroid.SHORT)
                     }
                     if (text == 1800) {
                       AsyncStorage.setItem('readTimer', "30")
+                      ToastAndroid.show("30 Coins Added", ToastAndroid.SHORT)
                     }
                     if (text == 1) {
                       AsyncStorage.setItem('readTimer', "60")
+                      ToastAndroid.show("60 Coins Added", ToastAndroid.SHORT)
                       this.setState({
                         timer: 0
                       })

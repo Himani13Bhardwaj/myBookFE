@@ -41,6 +41,10 @@ class RecentBooks extends Component {
       this.getLatestBooks();
     });
   }
+  
+  componentWillUnmount() {
+    this._unsubscribe()
+  }
 
   async getLatestBooks() {
     this.setState({

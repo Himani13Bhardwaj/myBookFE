@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, ToastAndroid, TouchableOpacity, View,Image } from "react-native";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import FlashMessage, {
   showMessage,
@@ -9,6 +9,7 @@ import axios from "axios";
 import * as Constants from '../book/common/constants';
 import AnimatedLoader from "react-native-animated-loader";
 import AsyncStorage from "@react-native-community/async-storage";
+import { FontAwesome } from "@expo/vector-icons";
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -19,6 +20,8 @@ export default class SignUp extends React.Component {
       username: "",
       password2: "",
       visible: false,
+      passwordVisible: false,
+      rePasswordVisible: false
     };
   }
 
@@ -82,6 +85,7 @@ export default class SignUp extends React.Component {
   render() {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <Image style={{width: 150, height: 150, resizeMode: "contain"}} source={require('../assets/logo.png')} />
       <AnimatedLoader
         visible={this.state.visible}
         overlayColor="rgba(255,255,255,0.75)"
@@ -93,7 +97,7 @@ export default class SignUp extends React.Component {
           style={{
             fontWeight: "bold",
             color: "#e91e63",
-            margin: 50,
+            marginBottom: 10,
             fontSize: 24,
           }}
         >
@@ -122,32 +126,83 @@ export default class SignUp extends React.Component {
             borderRadius: 10,
           }}
         />
-        <TextInput
-          placeholder="Enter Password"
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({ password: text })}
+        <View
           style={{
+            flexDirection: "row",
             width: responsiveWidth(90),
             borderWidth: 1,
             padding: 10,
             borderColor: "#e91e63",
             borderRadius: 10,
             marginTop: 10,
+            alignItems: "center",
           }}
-        />
-        <TextInput
-          placeholder="Re-enter Password"
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({ password2: text })}
+        >
+          <TextInput
+            placeholder="Enter Password"
+            secureTextEntry={!this.state.passwordVisible}
+            onChangeText={(text) => this.setState({ password: text })}
+            style={{ width: responsiveWidth(78) }}
+          />
+          {this.state.passwordVisible ? (
+            <FontAwesome
+              onPress={() =>
+                this.setState({ passwordVisible: !this.state.passwordVisible })
+              }
+              name="eye-slash"
+              size={18}
+              color="gray"
+            />
+          ) : (
+            <FontAwesome
+              onPress={() =>
+                this.setState({ passwordVisible: !this.state.passwordVisible })
+              }
+              name="eye"
+              size={18}
+              color="gray"
+            />
+          )}
+        </View>
+        <View
           style={{
+            flexDirection: "row",
             width: responsiveWidth(90),
             borderWidth: 1,
             padding: 10,
             borderColor: "#e91e63",
             borderRadius: 10,
             marginTop: 10,
+            alignItems: "center",
           }}
-        />
+        >
+          <TextInput
+            placeholder="Enter Password"
+            secureTextEntry={!this.state.rePasswordVisible}
+            onChangeText={(text) => this.setState({ password2: text })}
+            style={{ width: responsiveWidth(78) }}
+          />
+          {this.state.rePasswordVisible ? (
+            <FontAwesome
+              onPress={() =>
+                this.setState({ rePasswordVisible: !this.state.rePasswordVisible })
+              }
+              name="eye-slash"
+              size={18}
+              color="gray"
+            />
+          ) : (
+            <FontAwesome
+              onPress={() =>
+                this.setState({ rePasswordVisible: !this.state.rePasswordVisible })
+              }
+              name="eye"
+              size={18}
+              color="gray"
+            />
+          )}
+        </View>
+       
 
         <TouchableOpacity
           onPress={() => {

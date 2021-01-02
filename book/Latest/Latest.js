@@ -33,14 +33,8 @@ class Latest extends Component {
     };
   }
 
-  componentWillUnmount() {
-    this._unsubscribe;
-  }
-
   componentDidMount() {
-    this._unsubscribe = this.props.navigation.addListener("focus", () => {
       this.getLatestBooks();
-    });
   }
 
   getLatestBooks() {

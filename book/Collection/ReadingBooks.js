@@ -23,6 +23,7 @@ import { Header } from "../../book/common/header";
 import Constants from "expo-constants";
 import axios from "axios";
 import Error from "../../assets/error.svg";
+import Reading from "../../assets/reading-book.svg";
 import * as Constant from "../../book/common/constants";
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -40,6 +41,10 @@ class ReadingBooks extends Component {
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       this.getLatestBooks();
     });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe()
   }
 
   async getLatestBooks() {
@@ -92,6 +97,9 @@ class ReadingBooks extends Component {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="small" animating={this.state.visible} color= "#e91e63"/>
+        <View style={{padding: 10, alignSelf: "flex-end"}}>
+        <Reading width={40} height={40}/>
+        </View>
         {this.state.lengthBook > 0 ? (
               <FlatList
                 data={this.state.latestBooks}

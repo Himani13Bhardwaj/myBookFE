@@ -43,7 +43,8 @@ class BookInfo extends Component {
       myComment: "",
       token: "",
       id: "",
-      book_name: ""
+      book_name: "",
+      views: "",
     };
   }
 
@@ -65,7 +66,7 @@ class BookInfo extends Component {
       book_name: this.props.route.params.item.book_name,
     });
     console.log("token:", await AsyncStorage.getItem("token"));
-    console.log("[id]", this.props)
+    console.log("[id]", this.props);
     this.getBookInfo();
   }
   getBookInfo() {
@@ -76,28 +77,29 @@ class BookInfo extends Component {
       bookid: this.state.id,
       bookname: this.state.book_name,
     };
-    console.log("data",data)
-    axios.post(Constant.getBookInfoApi, data).then((response) => {
-      console.log(response.data);
-      this.setState({
-        visible: false,
-        bookName: response.data[0].book_name,
-        ranking: response.data[0].ranking,
-        author: response.data[0].author,
-        briefInfo: response.data[0].book_brief_info,
-        views: response.data[0].view,
-        comments: response.data[0].comments,
-        bookCover: response.data[0].book_cover_url,
+    console.log("data", data);
+    axios
+      .post(Constant.getBookInfoApi, data)
+      .then((response) => {
+        console.log(response.data);
+        this.setState({
+          visible: false,
+          bookName: response.data[0].book_name,
+          ranking: response.data[0].ranking,
+          author: response.data[0].author,
+          briefInfo: response.data[0].book_brief_info,
+          views: response.data[0].view,
+          comments: response.data[0].comments,
+          bookCover: response.data[0].book_cover_url,
+        });
+        console.log(response.data[0].comments.length);
+      })
+      .catch((e) => {
+        console.log("getbookinfo error", JSON.stringify(e));
+        this.setState({
+          visible: false,
+        });
       });
-      console.log(response.data[0].comments.length);
-    })
-    .catch(e => {
-      console.log("getbookinfo error", JSON.stringify(e))
-      this.setState({
-        visible: false,
-      });
-    })
-    ;
   }
 
   async upVote() {
@@ -123,7 +125,7 @@ class BookInfo extends Component {
             liked: true,
             disliked: false,
             ranking: response.data.ranking,
-            views: response.data.views,
+            views: response.data.view,
             comments: response.data.comments,
           });
           this.setState({
@@ -132,9 +134,9 @@ class BookInfo extends Component {
         })
         .catch((err) => {
           console.log("book up vote err", e);
-        this.setState({
-          visible: false,
-        });
+          this.setState({
+            visible: false,
+          });
         });
     } else {
       this.setState({
@@ -179,9 +181,9 @@ class BookInfo extends Component {
         })
         .catch((err) => {
           console.log("comment err", e);
-        this.setState({
-          visible: false,
-        });
+          this.setState({
+            visible: false,
+          });
         });
     } else {
       ToastAndroid.show("Please add a comment!", ToastAndroid.SHORT);
@@ -214,7 +216,7 @@ class BookInfo extends Component {
             disliked: true,
             liked: false,
             ranking: response.data.ranking,
-            views: response.data.views,
+            views: response.data.view,
             comments: response.data.comments,
           });
           this.setState({
@@ -223,9 +225,9 @@ class BookInfo extends Component {
         })
         .catch((err) => {
           console.log("book down vote err", err);
-        this.setState({
-          visible: false,
-        });
+          this.setState({
+            visible: false,
+          });
         });
     } else {
       this.setState({
@@ -236,15 +238,16 @@ class BookInfo extends Component {
     }
   }
 
-  
-
   showMessage() {
     ToastAndroid.show("Please login first!", ToastAndroid.SHORT);
   }
 
   async readBook() {
-    console.log(this.state.token)
-    if (await AsyncStorage.getItem("token") != null && await AsyncStorage.getItem("token") != undefined) {
+    console.log(this.state.token);
+    if (
+      (await AsyncStorage.getItem("token")) != null &&
+      (await AsyncStorage.getItem("token")) != undefined
+    ) {
       this.props.navigation.navigate("BookRead", {
         title: this.state.bookName,
         bookid: this.state.id,
@@ -252,7 +255,7 @@ class BookInfo extends Component {
       });
     } else {
       this.props.navigation.navigate("Login");
-      ToastAndroid.show('Please Login First!', ToastAndroid.SHORT)
+      ToastAndroid.show("Please Login First!", ToastAndroid.SHORT);
     }
   }
 
@@ -276,115 +279,99 @@ class BookInfo extends Component {
               animationStyle={{ width: 300, height: 300 }}
               speed={1}
             />
-
-            <Image
+            <View
               style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
                 width: responsiveWidth(100),
-                height: responsiveHeight(30),
-                resizeMode: "contain",
+                paddingVertical: 10,
               }}
-              source={{uri: this.state.bookCover}}
-            />
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                top: responsiveWidth(40),
-                right: 5,
-              }}
-              onPress={() => this.readBook()}
             >
+              <Image
+                style={{
+                  width: responsiveWidth(50),
+                  height: responsiveHeight(30),
+                  resizeMode: "contain",
+                }}
+                source={{ uri: this.state.bookCover }}
+              />
               <View
-                style={{
-                  backgroundColor: "#e91e63",
-                  padding: 10,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: 10,
-                  margin: 10,
-                  alignSelf: "flex-end",
-                  width: responsiveWidth(30),
-                }}
+                style={{ width: responsiveWidth(50), alignItems: "flex-start" }}
               >
-                <Text style={{ color: "#fff", fontWeight: "bold" }}>
-                  Read Book
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <View
-              style={{
-                marginTop: 10,
-                width: responsiveWidth(90),
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexDirection: "row",
-                alignSelf: "center",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: "#000",
-                }}
-              >
-                {this.state.bookName}
-              </Text>
-
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "gray",
-                }}
-              >
-                {this.state.views + " Views"}
-              </Text>
-            </View>
-            <View
-              style={{
-                width: responsiveWidth(90),
-                alignSelf: "center",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <View
-                style={{
-                  margin: 20,
-                  marginTop: 0,
-                  marginLeft: 0,
-                  width: responsiveWidth(25),
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                }}
-              >
-                {this.state.liked ? (
-                  <LikeFilled height={30} width={30} />
-                ) : (
-                  <TouchableWithoutFeedback
-                    onPress={() => {
-                      this.upVote();
+                <View
+                  style={{
+                    marginTop: 10,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      color: "#000",
                     }}
                   >
-                    <Like height={30} width={30} />
-                  </TouchableWithoutFeedback>
-                )}
-                <View style={{ marginTop: 25 }}>
-                  {this.state.disliked ? (
-                    <DislikeFilled height={30} width={30} />
-                  ) : (
-                    <TouchableWithoutFeedback
-                      onPress={() => {
-                        this.downVote();
-                      }}
-                    >
-                      <Dislike height={30} width={30} />
-                    </TouchableWithoutFeedback>
-                  )}
+                    {this.state.bookName}
+                  </Text>
                 </View>
-              </View>
-              <Rating
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: "gray",
+                    alignSelf: "flex-start",
+                    margin: 5,
+                  }}
+                >
+                  {this.state.views + " Views"}
+                </Text>
+                <View
+                  style={{
+                    alignSelf: "flex-start",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View
+                    style={{
+                      margin: 20,
+                      marginTop: 0,
+                      marginLeft: 0,
+                      width: responsiveWidth(25),
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                      alignItems: "center",
+                    }}
+                  >
+                    {this.state.liked ? (
+                      <LikeFilled height={30} width={30} />
+                    ) : (
+                      <TouchableWithoutFeedback
+                        onPress={() => {
+                          this.upVote();
+                        }}
+                      >
+                        <Like height={30} width={30} />
+                      </TouchableWithoutFeedback>
+                    )}
+                    <View style={{ marginTop: 25 }}>
+                      {this.state.disliked ? (
+                        <DislikeFilled height={30} width={30} />
+                      ) : (
+                        <TouchableWithoutFeedback
+                          onPress={() => {
+                            this.downVote();
+                          }}
+                        >
+                          <Dislike height={30} width={30} />
+                        </TouchableWithoutFeedback>
+                      )}
+                    </View>
+                  </View>
+                  {/* <Rating
                 type="heart"
                 ratingCount={5}
                 imageSize={24}
@@ -394,7 +381,31 @@ class BookInfo extends Component {
                 ratingBackgroundColor="#e91e63"
                 style={{ marginBottom: 10 }}
                 startingValue={this.state.ranking}
-              />
+              /> */}
+                </View>
+                <TouchableOpacity
+                onPress={() => this.readBook()}
+              >
+                <View
+                  style={{
+                    backgroundColor: "#e91e63",
+                    padding: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: 10,
+                    margin: 10,
+                    width: responsiveWidth(40),
+                    alignSelf: "flex-start",
+                    bottom: -10,
+                  }}
+                >
+                  <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                    Read Book
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              </View>
+              
             </View>
             <View style={{ padding: 20, paddingVertical: 0 }}>
               <Text style={{ fontWeight: "bold", fontSize: 13 }}>Author</Text>
@@ -443,44 +454,59 @@ class BookInfo extends Component {
                       padding: 10,
                       alignItems: "flex-start",
                       justifyContent: "space-between",
-                      width: responsiveWidth(90)
+                      width: responsiveWidth(90),
                     }}
                   >
-                  <View style={{flexDirection: "row", alignItems: "center"}}>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <View
+                        style={{
+                          width: 30,
+                          aspectRatio: 1,
+                          borderRadius: 100,
+                          borderWidth: 2,
+                          borderColor: "#e91e63",
+                          marginRight: 10,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text style={{ fontWeight: "bold", color: "#e91e63" }}>
+                          {item.username.slice(0, 1).toUpperCase()}
+                        </Text>
+                      </View>
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          color: "#000",
+                        }}
+                      >
+                        {item.comment}
+                      </Text>
+                    </View>
                     <View
                       style={{
-                        width: 30,
-                        aspectRatio: 1,
-                        borderRadius: 100,
-                        borderWidth: 2,
-                        borderColor: "#e91e63",
-                        marginRight: 10,
+                        alignSelf: "flex-end",
+                        flexDirection: "row",
                         alignItems: "center",
-                        justifyContent: "center",
                       }}
                     >
-                      <Text style={{fontWeight: "bold", color:"#e91e63"}}>{item.username.slice(0,1).toUpperCase()}</Text>
-                    </View>
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontWeight: "bold",
-                        color: "#000",
-                      }}
-                    >
-                      {item.comment}
-                    </Text>
-                    </View>
-                    <View style={{alignSelf: "flex-end", flexDirection: "row", alignItems: "center"}}>
-                      <Text style={{fontSize: 12, color: "gray"}}>{item.username} | </Text> 
-                      <Text style={{fontSize: 12, color: "gray"}}>{item.email}</Text> 
+                      <Text style={{ fontSize: 12, color: "gray" }}>
+                        {item.username} |{" "}
+                      </Text>
+                      <Text style={{ fontSize: 12, color: "gray" }}>
+                        {item.email}
+                      </Text>
                     </View>
                   </View>
-                  
                 </TouchableWithoutFeedback>
               )}
             />
-            {this.state.token != null && this.state.token != undefined && this.state.token != ""? (
+            {this.state.token != null &&
+            this.state.token != undefined &&
+            this.state.token != "" ? (
               <View
                 style={{
                   flexDirection: "row",

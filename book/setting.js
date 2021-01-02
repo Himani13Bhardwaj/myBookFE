@@ -46,16 +46,25 @@ class Setting extends Component {
   }
 
   async componentDidMount() {
-    this.setState({
-      token: await AsyncStorage.getItem("token"),
-      readTimer: await AsyncStorage.getItem("readTimer"),
+      this.setState({
+        token: await AsyncStorage.getItem("token"),
+      });
+      if (
+        (await AsyncStorage.getItem("token")) != undefined &&
+        (await AsyncStorage.getItem("token")) != null
+      ) {
+        this.userProfile();
+      }
+      
+    this._unsubscribe = this.props.navigation.addListener("focus", async () => {
+      this.setState({
+        readTimer: await AsyncStorage.getItem("readTimer"),
+      })
     });
-    if (
-      (await AsyncStorage.getItem("token")) != undefined &&
-      (await AsyncStorage.getItem("token")) != null
-    ) {
-      this.userProfile();
-    }
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   async userProfile() {
@@ -110,7 +119,10 @@ class Setting extends Component {
           visible: false,
         });
         ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
-        AsyncStorage.setItem("readTimer", "0")
+        this.setState({
+          readTimer: 0
+        })
+        AsyncStorage.setItem("readTimer", "0");
       })
       .catch((e) => {
         console.log("error:", e);
@@ -143,7 +155,14 @@ class Setting extends Component {
           animationStyle={{ width: 300, height: 300 }}
           speed={1}
         />
-        <View style={{ flexDirection: "row", alignItems: "center", width: responsiveWidth(90), marginVertical: responsiveHeight(5) }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            width: responsiveWidth(90),
+            marginVertical: responsiveHeight(5),
+          }}
+        >
           <View
             style={{
               alignSelf: "center",
@@ -253,7 +272,7 @@ class Setting extends Component {
                     Claim Coins
                   </Text>
                 </View>
-                
+
                 <View
                   style={{
                     marginLeft: 10,
@@ -263,87 +282,95 @@ class Setting extends Component {
                     width: responsiveWidth(40),
                   }}
                 >
-                {this.state.readTimer == "15" ?
-                  <TouchableOpacity
-                    onPress={() => this.claimCoins(15)}
-                  >
-                    <View
-                      style={{
-                        borderRadius: 60,
-                        backgroundColor: "#e91e63",
-                        padding: 10,
-                        paddingVertical: 5,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
+                  {this.state.readTimer == "15" ? (
+                    <TouchableOpacity onPress={() => this.claimCoins(15)}>
+                      <View
                         style={{
-                          fontSize: 16,
-                          color: "#fff",
+                          borderRadius: 60,
+                          backgroundColor: "#e91e63",
+                          padding: 10,
+                          paddingVertical: 5,
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
-                        Claim 15 Coins
-                      </Text>
-                    </View>
-                  </TouchableOpacity> : null}
-                  {this.state.readTimer == "30" ?
-                  <TouchableOpacity
-                    disabled={this.state.readTimer != "30"}
-                    onPress={() => this.claimCoins(30)}
-                  >
-                    <View
-                      style={{
-                        borderRadius: 60,
-                        backgroundColor:
-                          this.state.readTimer == "30" ? "#e91e63" : "gray",
-                        padding: 10,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: "#fff",
+                          }}
+                        >
+                          Claim 15 Coins
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ) : null}
+                  {this.state.readTimer == "30" ? (
+                    <TouchableOpacity
+                      disabled={this.state.readTimer != "30"}
+                      onPress={() => this.claimCoins(30)}
                     >
-                      <Text
+                      <View
                         style={{
-                          fontSize: 16,
-                          color: "#fff",
-                          fontWeight: "bold",
+                          borderRadius: 60,
+                          backgroundColor:
+                            this.state.readTimer == "30" ? "#e91e63" : "gray",
+                          padding: 10,
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
-                        30
-                      </Text>
-                    </View>
-                  </TouchableOpacity> : null }
-                  {this.state.readTimer == "60" ?
-                  <TouchableOpacity
-                    disabled={this.state.readTimer != "60"}
-                    onPress={() => this.claimCoins(60)}
-                  >
-                    <View
-                      style={{
-                        borderRadius: 60,
-                        backgroundColor:
-                          this.state.readTimer == "60" ? "#e91e63" : "gray",
-                        padding: 10,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: "#fff",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          30
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ) : null}
+                  {this.state.readTimer == "60" ? (
+                    <TouchableOpacity
+                      disabled={this.state.readTimer != "60"}
+                      onPress={() => this.claimCoins(60)}
                     >
-                      <Text
+                      <View
                         style={{
-                          fontSize: 16,
-                          color: "#fff",
-                          fontWeight: "bold",
+                          borderRadius: 60,
+                          backgroundColor:
+                            this.state.readTimer == "60" ? "#e91e63" : "gray",
+                          padding: 10,
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
-                        60
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: "#fff",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          60
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ) : null}
+                  {this.state.readTimer != "15" &&
+                  this.state.readTimer != "30" &&
+                  this.state.readTimer != "60" ? (
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Error width={16} height={16} />
+                      <Text style={{ color: "gray", marginLeft: 5 }}>
+                        No Coins to Claim
                       </Text>
                     </View>
-                  </TouchableOpacity> : null }
-                  {this.state.readTimer != "15" && this.state.readTimer != "30" && this.state.readTimer != "60" ?
-                  <View style={{flexDirection: "row", alignItems: "center"}}>
-                    <Error width={16} height={16}/>
-                    <Text style={{color:"gray", marginLeft: 5}}>No Coins to Claim</Text>
-                    </View>: null}
+                  ) : null}
                 </View>
               </View>
               <TouchableOpacity

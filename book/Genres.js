@@ -106,51 +106,60 @@ class Genres extends Component {
             }
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate("BookInfo", { item: item })
-                }
-              >
-                <View
-                  style={{
-                    alignItems: "center",
-                    marginBottom: 15,
-                    alignSelf: "center",
-                    width: responsiveWidth(33),
-                    borderRadius: 10,
-                  }}
-                >
-                  <Image
-                    style={[styles.tinyLogo, { resizeMode: "contain" }]}
-                    source={{
-                      uri: item.book_cover_url,
-                    }}
-                  />
-                  <TouchableWithoutFeedback
-                    onPress={() => this.getBookDetails(item)}
+                    onPress={() =>
+                      this.props.navigation.navigate("BookInfo", {
+                        item: item,
+                        bookId: item.id,
+                      })
+                    }
                   >
                     <View
                       style={{
-                        width: responsiveWidth(30),
-                        padding: 5,
-                        backgroundColor: "#e91e63",
-                        justifyContent: "center",
                         alignItems: "center",
-                        position: "absolute",
-                        borderRadius: 10,
-                        margin: 10,
-                        bottom: -15,
+                        marginBottom: 20,
+                        width: responsiveWidth(50),
                       }}
                     >
+                      <View
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: responsiveWidth(35),
+                          aspectRatio: 1,
+                          margin: 10,
+                          borderRadius: 200,
+                          borderWidth: 4,
+                          marginBottom: 10,
+                          borderColor: "#c9ad",
+                        }}
+                      >
+                        <View style={{ padding: 10 }}>
+                          <Image
+                            style={{
+                              zIndex: -1,
+                              width: responsiveWidth(30),
+                              borderRadius: 200,
+                              aspectRatio: 1,
+                              resizeMode: "contain",
+                            }}
+                            source={{
+                              uri:
+                                item.book_cover_url != ""
+                                  ? item.book_cover_url
+                                  : "#https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?b=1&k=6&m=1214428300&s=612x612&w=0&h=kMXMpWVL6mkLu0TN-9MJcEUx1oSWgUq8-Ny6Wszv_ms=",
+                            }}
+                          />
+                        </View>
+                      </View>
                       <Text
                         numberOfLines={1}
-                        style={{ color: "#fff", fontWeight: "bold", fontSize: 12 }}
+                        style={{ color: "#000", fontWeight: "bold" }}
                       >
                         {item.book_name}
                       </Text>
                     </View>
-                  </TouchableWithoutFeedback>
-                </View>
-              </TouchableOpacity>
+                  </TouchableOpacity>
+               
             )}
             numColumns={3}
             ItemSeparatorComponent={this.renderSeparator}
