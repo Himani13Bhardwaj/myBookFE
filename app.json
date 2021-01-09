@@ -1,0 +1,46 @@
+{
+    "expo": {
+        "name": "BookHunt",
+        "slug": "BookHunt",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/logos/appicon.png",
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true
+        },
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "android": {
+            "package": "com.bookhunt",
+            "versionCode": 1
+        },
+        "web": {
+            "favicon": "./assets/logos/appicon.png"
+        },
+        "packagerOpts": {
+            "config": "metro.config.js",
+            "sourceExts": [
+                "expo.ts",
+                "expo.tsx",
+                "expo.js",
+                "expo.jsx",
+                "ts",
+                "tsx",
+                "js",
+                "jsx",
+                "json",
+                "wasm",
+                "svg"
+            ]
+        }
+    }
+}
