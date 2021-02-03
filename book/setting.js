@@ -199,13 +199,11 @@ class Setting extends Component {
           </View>
         </View>
         {this.state.token != null && this.state.token != undefined ? (
-          <View>
+          <View style={{backgroundColor: "#fff", paddingVertical: 10, borderRadius: 10, alignItems: 'center', justifyContent: "center"}}>
             <View
               style={{
                 width: responsiveWidth(90),
                 padding: 10,
-                borderRadius: 10,
-                elevation: 3,
                 backgroundColor: "#fff",
               }}
             >
@@ -243,6 +241,7 @@ class Setting extends Component {
                       alignItems: "center",
                       justifyContent: "center",
                       borderRadius: 5,
+                elevation: 3,
                       backgroundColor:
                         this.state.readTimer == "15" ? "#e91e63" : "gray",
                       margin: 10,
@@ -270,6 +269,7 @@ class Setting extends Component {
                       alignItems: "center",
                       justifyContent: "center",
                       borderRadius: 5,
+                elevation: 3,
                       backgroundColor:
                         this.state.readTimer == "30" ? "#e91e63" : "gray",
                       margin: 10,
@@ -318,7 +318,7 @@ class Setting extends Component {
 
             <View
               style={{
-                width: responsiveWidth(90),
+                width: responsiveWidth(80),
                 padding: 10,
                 borderRadius: 10,
                 elevation: 3,
@@ -333,7 +333,7 @@ class Setting extends Component {
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    width: responsiveWidth(90),
+                    width: responsiveWidth(80),
                     alignSelf: "center",
                     padding: 10,
                     alignItems: "center",
@@ -358,7 +358,7 @@ class Setting extends Component {
 
             <View
               style={{
-                width: responsiveWidth(90),
+                width: responsiveWidth(80),
                 padding: 10,
                 borderRadius: 10,
                 elevation: 3,
@@ -373,7 +373,7 @@ class Setting extends Component {
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    width: responsiveWidth(90),
+                    width: responsiveWidth(80),
                     alignSelf: "center",
                     padding: 10,
                     alignItems: "center",
@@ -402,7 +402,7 @@ class Setting extends Component {
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    width: responsiveWidth(90),
+                    width: responsiveWidth(80),
                     alignSelf: "center",
                     padding: 10,
                     alignItems: "center",
@@ -430,7 +430,7 @@ class Setting extends Component {
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    width: responsiveWidth(90),
+                    width: responsiveWidth(80),
                     alignSelf: "center",
                     padding: 10,
                     alignItems: "center",

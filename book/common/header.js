@@ -21,40 +21,51 @@ import LeftArrow from "../../assets/left-arrow.svg";
 export const Header = (props) => {
   return (
     <View style={styles.headerContainer}>
-    {props.backBtnVisible == true ? 
-    <TouchableOpacity onPress={props.onBackBtnPress}>
-      <View
-        style={{
-          width: 35,
-          aspectRatio: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 100,
-          backgroundColor: "transparent",
-        }}
-      >
-        
-        <LeftArrow height={25} width={25} /> 
-      </View> 
-      </TouchableOpacity>
-      :
-      <View
-        style={{
-          width: 35,
-          aspectRatio: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 100,
-          backgroundColor: "#fff",
-        }}
-      >
-        
-        <BookIcon height={25} width={25} /> 
-      </View>}
-      <Text style={styles.headerLabel}>{props.headerTitle}</Text>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        {props.backBtnVisible == true ? (
+          <TouchableOpacity onPress={props.onBackBtnPress}>
+            <View
+              style={{
+                width: 35,
+                aspectRatio: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 100,
+                backgroundColor: "transparent",
+              }}
+            >
+              <LeftArrow height={25} width={25} />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <View
+            style={{
+              width: 35,
+              aspectRatio: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 100,
+              backgroundColor: "#fff",
+            }}
+          >
+            <BookIcon height={25} width={25} />
+          </View>
+        )}
+
+        <Text style={styles.headerLabel}>{props.headerTitle}</Text>
+      </View>
       {/* <Image source={
             {uri : "https://www.freeiconspng.com/uploads/book-icon-1.png"}  
             } */}
+      {props.clearBtn ? (
+        <TouchableOpacity onPress={props.onClearBtn}>
+          <Text
+            style={{ color: "#fff", fontWeight: "bold", alignSelf: "flex-end" }}
+          >
+            Clear All
+          </Text>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
@@ -66,6 +77,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     width: responsiveWidth(100),
     backgroundColor: "#e91e63",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   headerLabel: {
